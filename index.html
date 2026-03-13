@@ -1,0 +1,608 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>AOC — The People's Champion</title>
+  <meta name="description" content="Celebrating the extraordinary accomplishments of Alexandria Ocasio-Cortez, the youngest woman ever elected to Congress." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;900&family=Playfair+Display:wght@700;900&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --red: #e63946;
+      --blue: #1d3557;
+      --sky: #457b9d;
+      --light: #a8dadc;
+      --white: #f1faee;
+      --gold: #f4a261;
+      --green: #2a9d8f;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background: #0a0a0f;
+      color: var(--white);
+      overflow-x: hidden;
+    }
+
+    /* ── HERO ── */
+    .hero {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 2rem;
+      position: relative;
+      background: radial-gradient(ellipse at 60% 0%, #1d3557 0%, #0a0a0f 60%);
+      overflow: hidden;
+    }
+
+    .hero::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23457b9d' fill-opacity='0.06'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+    }
+
+    .hero-label {
+      font-size: 0.75rem;
+      font-weight: 700;
+      letter-spacing: 0.3em;
+      text-transform: uppercase;
+      color: var(--light);
+      margin-bottom: 1.5rem;
+      border: 1px solid var(--sky);
+      padding: 0.4rem 1rem;
+      border-radius: 999px;
+      display: inline-block;
+    }
+
+    .hero h1 {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(3.5rem, 10vw, 8rem);
+      font-weight: 900;
+      line-height: 1;
+      background: linear-gradient(135deg, #f1faee 0%, #a8dadc 50%, #457b9d 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      margin-bottom: 0.5rem;
+    }
+
+    .hero-sub {
+      font-size: clamp(1.1rem, 3vw, 1.6rem);
+      color: var(--light);
+      font-weight: 300;
+      margin-bottom: 2.5rem;
+      opacity: 0.9;
+    }
+
+    .hero-quote {
+      font-size: clamp(1rem, 2.5vw, 1.25rem);
+      font-style: italic;
+      color: #a8dadc;
+      max-width: 600px;
+      line-height: 1.7;
+      border-left: 3px solid var(--red);
+      padding-left: 1.25rem;
+      text-align: left;
+      margin-bottom: 3rem;
+    }
+
+    .cta-btn {
+      display: inline-block;
+      padding: 0.85rem 2.5rem;
+      background: var(--red);
+      color: white;
+      font-weight: 700;
+      font-size: 1rem;
+      border-radius: 4px;
+      text-decoration: none;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      transition: transform 0.2s, box-shadow 0.2s;
+      box-shadow: 0 0 40px rgba(230, 57, 70, 0.4);
+    }
+
+    .cta-btn:hover { transform: translateY(-2px); box-shadow: 0 0 60px rgba(230, 57, 70, 0.6); }
+
+    .scroll-arrow {
+      position: absolute;
+      bottom: 2rem;
+      left: 50%;
+      transform: translateX(-50%);
+      animation: bounce 2s infinite;
+      font-size: 1.5rem;
+      opacity: 0.5;
+    }
+
+    @keyframes bounce {
+      0%, 100% { transform: translateX(-50%) translateY(0); }
+      50% { transform: translateX(-50%) translateY(8px); }
+    }
+
+    /* ── STATS BAR ── */
+    .stats-bar {
+      background: var(--red);
+      padding: 2rem;
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 3rem;
+    }
+
+    .stat {
+      text-align: center;
+    }
+
+    .stat-number {
+      font-family: 'Playfair Display', serif;
+      font-size: 2.5rem;
+      font-weight: 900;
+      display: block;
+    }
+
+    .stat-label {
+      font-size: 0.8rem;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      opacity: 0.85;
+    }
+
+    /* ── SECTIONS ── */
+    section {
+      padding: 6rem 2rem;
+      max-width: 1100px;
+      margin: 0 auto;
+    }
+
+    .section-tag {
+      font-size: 0.7rem;
+      font-weight: 700;
+      letter-spacing: 0.3em;
+      text-transform: uppercase;
+      color: var(--light);
+      margin-bottom: 0.75rem;
+    }
+
+    h2 {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(2rem, 5vw, 3.5rem);
+      font-weight: 900;
+      margin-bottom: 1.5rem;
+      line-height: 1.1;
+    }
+
+    h2 span { color: var(--red); }
+
+    .section-lead {
+      font-size: 1.1rem;
+      color: #a8dadc;
+      max-width: 650px;
+      line-height: 1.8;
+      margin-bottom: 3rem;
+    }
+
+    /* ── TIMELINE ── */
+    .timeline {
+      position: relative;
+      padding-left: 2rem;
+    }
+
+    .timeline::before {
+      content: '';
+      position: absolute;
+      left: 0;
+      top: 0;
+      bottom: 0;
+      width: 2px;
+      background: linear-gradient(to bottom, var(--red), var(--sky), var(--green));
+    }
+
+    .timeline-item {
+      position: relative;
+      margin-bottom: 2.5rem;
+      padding-left: 1.5rem;
+    }
+
+    .timeline-item::before {
+      content: '';
+      position: absolute;
+      left: -2.4rem;
+      top: 0.4rem;
+      width: 12px;
+      height: 12px;
+      background: var(--red);
+      border-radius: 50%;
+      border: 2px solid #0a0a0f;
+      box-shadow: 0 0 12px var(--red);
+    }
+
+    .timeline-year {
+      font-size: 0.75rem;
+      font-weight: 700;
+      letter-spacing: 0.15em;
+      color: var(--gold);
+      text-transform: uppercase;
+      margin-bottom: 0.3rem;
+    }
+
+    .timeline-title {
+      font-size: 1.1rem;
+      font-weight: 700;
+      margin-bottom: 0.4rem;
+      color: var(--white);
+    }
+
+    .timeline-desc {
+      font-size: 0.95rem;
+      color: #8899aa;
+      line-height: 1.6;
+    }
+
+    /* ── WINS GRID ── */
+    .wins-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      gap: 1.5rem;
+      margin-top: 3rem;
+    }
+
+    .win-card {
+      background: #111827;
+      border: 1px solid #1e293b;
+      border-radius: 8px;
+      padding: 1.75rem;
+      transition: border-color 0.2s, transform 0.2s;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .win-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 3px;
+      background: var(--accent, var(--red));
+    }
+
+    .win-card:hover {
+      border-color: var(--sky);
+      transform: translateY(-3px);
+    }
+
+    .win-icon { font-size: 2rem; margin-bottom: 1rem; }
+    .win-title { font-size: 1rem; font-weight: 700; margin-bottom: 0.5rem; }
+    .win-desc { font-size: 0.875rem; color: #8899aa; line-height: 1.6; }
+
+    /* ── QUOTE SECTION ── */
+    .quote-section {
+      background: linear-gradient(135deg, #1d3557, #0d1b2a);
+      padding: 5rem 2rem;
+      text-align: center;
+    }
+
+    .big-quote {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(1.5rem, 4vw, 2.75rem);
+      font-weight: 700;
+      max-width: 800px;
+      margin: 0 auto 1.5rem;
+      line-height: 1.4;
+      color: var(--white);
+    }
+
+    .quote-attr {
+      font-size: 0.9rem;
+      color: var(--light);
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+    }
+
+    /* ── IMPACT ── */
+    .impact-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 4rem;
+      align-items: center;
+      margin-bottom: 5rem;
+    }
+
+    .impact-row.reverse { direction: rtl; }
+    .impact-row.reverse > * { direction: ltr; }
+
+    .impact-number {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(4rem, 10vw, 7rem);
+      font-weight: 900;
+      color: var(--red);
+      line-height: 1;
+      margin-bottom: 0.5rem;
+    }
+
+    .impact-label {
+      font-size: 1.1rem;
+      font-weight: 600;
+      margin-bottom: 0.75rem;
+    }
+
+    .impact-desc {
+      font-size: 0.95rem;
+      color: #8899aa;
+      line-height: 1.7;
+    }
+
+    /* ── FOOTER ── */
+    footer {
+      background: #050508;
+      padding: 3rem 2rem;
+      text-align: center;
+      border-top: 1px solid #1e293b;
+    }
+
+    .footer-title {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.5rem;
+      font-weight: 900;
+      margin-bottom: 0.5rem;
+    }
+
+    .footer-sub {
+      font-size: 0.85rem;
+      color: #4a5568;
+      margin-top: 2rem;
+    }
+
+    /* ── DIVIDER ── */
+    .divider {
+      width: 60px;
+      height: 4px;
+      background: var(--red);
+      margin: 1rem 0 2rem;
+    }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 768px) {
+      .impact-row { grid-template-columns: 1fr; gap: 2rem; }
+      .impact-row.reverse { direction: ltr; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- HERO -->
+  <section class="hero">
+    <div class="hero-label">The People's Champion</div>
+    <h1>AOC</h1>
+    <p class="hero-sub">Alexandria Ocasio-Cortez · NY-14 · Youngest Woman Ever Elected to Congress</p>
+    <blockquote class="hero-quote">
+      "I'm going to fight for you whether you voted for me or not. Because that's what it means to be a representative."
+    </blockquote>
+    <a href="#wins" class="cta-btn">See Her Record</a>
+    <div class="scroll-arrow">↓</div>
+  </section>
+
+  <!-- STATS BAR -->
+  <div class="stats-bar">
+    <div class="stat">
+      <span class="stat-number">29</span>
+      <span class="stat-label">Age First Elected</span>
+    </div>
+    <div class="stat">
+      <span class="stat-number">$369B</span>
+      <span class="stat-label">Climate Investment Won</span>
+    </div>
+    <div class="stat">
+      <span class="stat-number">$165M</span>
+      <span class="stat-label">Disaster Relief Secured</span>
+    </div>
+    <div class="stat">
+      <span class="stat-number">1,400+</span>
+      <span class="stat-label">Constituent Cases Opened</span>
+    </div>
+    <div class="stat">
+      <span class="stat-number">$35</span>
+      <span class="stat-label">Insulin Cap Won</span>
+    </div>
+  </div>
+
+  <!-- ORIGIN STORY -->
+  <section>
+    <p class="section-tag">The Origin</p>
+    <h2>From Bartender to <span>Congress</span></h2>
+    <div class="divider"></div>
+    <p class="section-lead">
+      In 2018, a 28-year-old Bronx-born bartender and waitress shocked the political establishment — defeating a 10-term incumbent in one of the biggest primary upsets in American history. No one gave her a shot. She won anyway.
+    </p>
+
+    <div class="timeline">
+      <div class="timeline-item">
+        <div class="timeline-year">1989</div>
+        <div class="timeline-title">Born in the Bronx, New York</div>
+        <div class="timeline-desc">Grew up in a working-class Puerto Rican family. Commuted from the Bronx to school in Yorktown Heights.</div>
+      </div>
+      <div class="timeline-item">
+        <div class="timeline-year">2011</div>
+        <div class="timeline-title">Boston University — Cum Laude</div>
+        <div class="timeline-desc">Graduated with degrees in Economics and International Relations while working multiple jobs to support her family after her father's death.</div>
+      </div>
+      <div class="timeline-item">
+        <div class="timeline-year">2016–2018</div>
+        <div class="timeline-title">Bartender & Community Organizer</div>
+        <div class="timeline-desc">Worked service industry jobs while organizing for progressive causes. Her brother nominated her to run for Congress.</div>
+      </div>
+      <div class="timeline-item">
+        <div class="timeline-year">June 2018</div>
+        <div class="timeline-title">Historic Primary Upset</div>
+        <div class="timeline-desc">Defeated 10-term incumbent Joe Crowley — the #4 Democrat in the House and presumed future Speaker — with a grassroots, small-donor campaign.</div>
+      </div>
+      <div class="timeline-item">
+        <div class="timeline-year">January 2019</div>
+        <div class="timeline-title">Youngest Woman Ever Elected to Congress</div>
+        <div class="timeline-desc">Sworn in at age 29. On day one, she joined protesters in Nancy Pelosi's office demanding action on climate change.</div>
+      </div>
+      <div class="timeline-item">
+        <div class="timeline-year">2019–Present</div>
+        <div class="timeline-title">Reshaping American Politics</div>
+        <div class="timeline-desc">Consistently one of the most influential members of Congress, with a massive grassroots following and a record that punches well above her seniority level.</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- BIG QUOTE -->
+  <div class="quote-section">
+    <p class="big-quote">"In a democracy, power doesn't come from a place of asking nicely. Power is built."</p>
+    <p class="quote-attr">— Alexandria Ocasio-Cortez</p>
+  </div>
+
+  <!-- LEGISLATIVE WINS -->
+  <section id="wins">
+    <p class="section-tag">The Record</p>
+    <h2>Real Wins for <span>Real People</span></h2>
+    <div class="divider"></div>
+    <p class="section-lead">She didn't just show up — she delivered. Here's what AOC actually got done.</p>
+
+    <div class="wins-grid">
+      <div class="win-card" style="--accent: var(--green);">
+        <div class="win-icon">🌍</div>
+        <div class="win-title">$369 Billion Climate Investment</div>
+        <div class="win-desc">Core tenets of the Green New Deal became the backbone of the Inflation Reduction Act — the largest climate investment in US history. 40% emissions reduction target by 2030.</div>
+      </div>
+      <div class="win-card" style="--accent: var(--red);">
+        <div class="win-icon">💉</div>
+        <div class="win-title">Insulin Cap at $35/Month</div>
+        <div class="win-desc">Fought alongside advocates to cap insulin prices at $35/month for Medicare beneficiaries and limit out-of-pocket drug costs to $2,000/year. Life-saving for millions.</div>
+      </div>
+      <div class="win-card" style="--accent: var(--sky);">
+        <div class="win-icon">💧</div>
+        <div class="win-title">Lead Water Infrastructure</div>
+        <div class="win-desc">Doubled federal funding to replace lead pipes in schools and childcare programs. No child should be poisoned by drinking water in America.</div>
+      </div>
+      <div class="win-card" style="--accent: var(--gold);">
+        <div class="win-icon">👵</div>
+        <div class="win-title">Home Care Workers Act</div>
+        <div class="win-desc">Championed fair wages legislation guaranteeing minimum wage and overtime protections for 3+ million home care workers — overwhelmingly women of color.</div>
+      </div>
+      <div class="win-card" style="--accent: var(--green);">
+        <div class="win-icon">🌱</div>
+        <div class="win-title">American Climate Corps</div>
+        <div class="win-desc">Her advocacy helped inspire the creation of the American Climate Corps, training 20,000 service members for climate resilience and clean energy jobs.</div>
+      </div>
+      <div class="win-card" style="--accent: var(--red);">
+        <div class="win-icon">🏘️</div>
+        <div class="win-title">$100M Green Infrastructure</div>
+        <div class="win-desc">Secured over $100 million in funding for 60+ Green New Deal infrastructure projects across the country, from Hawaii to Vermont.</div>
+      </div>
+      <div class="win-card" style="--accent: var(--sky);">
+        <div class="win-icon">🌊</div>
+        <div class="win-title">Fastest FEMA Disaster Declaration</div>
+        <div class="win-desc">After devastating floods hit her district, she secured one of the fastest FEMA disaster declarations in history. ~25,000 families received $165 million in aid.</div>
+      </div>
+      <div class="win-card" style="--accent: var(--gold);">
+        <div class="win-icon">👨‍👩‍👧</div>
+        <div class="win-title">Child Tax Credit Expansion</div>
+        <div class="win-desc">Fought for expanded Child Tax Credit provisions in the American Rescue Plan, providing monthly payments to working families and cutting child poverty nearly in half.</div>
+      </div>
+      <div class="win-card" style="--accent: var(--green);">
+        <div class="win-icon">💳</div>
+        <div class="win-title">Credit Card Rate Cap</div>
+        <div class="win-desc">Introduced legislation to cap credit card interest rates at 10%, protecting working-class Americans from predatory lending practices.</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- IMPACT NUMBERS -->
+  <section style="background: #0d1117; padding: 6rem 2rem; max-width: 100%;">
+    <div style="max-width: 1100px; margin: 0 auto;">
+      <p class="section-tag">The Impact</p>
+      <h2>Numbers Don't <span>Lie</span></h2>
+      <div class="divider"></div>
+
+      <div class="impact-row">
+        <div>
+          <div class="impact-number">15+</div>
+          <div class="impact-label">Bills Signed Into Law</div>
+          <div class="impact-desc">In her first two terms alone — more legislative impact than most members achieve in a decade. And she was just getting started.</div>
+        </div>
+        <div>
+          <div class="impact-number">90%</div>
+          <div class="impact-label">More Amendments Than Peers</div>
+          <div class="impact-desc">Introduced more amendments than 90% of freshman House colleagues. She came to work, not to pose for photos.</div>
+        </div>
+      </div>
+
+      <div class="impact-row reverse">
+        <div>
+          <div class="impact-number">13M</div>
+          <div class="impact-label">Social Media Following</div>
+          <div class="impact-desc">Pioneered direct-to-constituent communication — using Instagram, Twitter/X, and livestreams to explain policy in plain language to millions of Americans.</div>
+        </div>
+        <div>
+          <div class="impact-number">2018</div>
+          <div class="impact-label">The Upset That Changed Everything</div>
+          <div class="impact-desc">Her primary victory over Joe Crowley was called the biggest upset of the 2018 cycle — and a harbinger of a new Democratic Party.</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- GREEN NEW DEAL -->
+  <section>
+    <p class="section-tag">The Vision</p>
+    <h2>The Green New <span>Deal</span></h2>
+    <div class="divider"></div>
+    <p class="section-lead">
+      She didn't just propose incremental tweaks. AOC introduced the most ambitious climate legislation in American history — and even without full passage, it changed everything.
+    </p>
+    <div class="wins-grid">
+      <div class="win-card" style="--accent: var(--green);">
+        <div class="win-icon">⚡</div>
+        <div class="win-title">Net-Zero Emissions in 10 Years</div>
+        <div class="win-desc">An aggressive but scientifically-backed plan to transition the US to 100% renewable energy — protecting the planet for future generations.</div>
+      </div>
+      <div class="win-card" style="--accent: var(--sky);">
+        <div class="win-icon">🔨</div>
+        <div class="win-title">Millions of Union Jobs</div>
+        <div class="win-desc">The GND isn't just about the environment — it's a jobs program. High-wage, union positions rebuilding national infrastructure and the clean energy economy.</div>
+      </div>
+      <div class="win-card" style="--accent: var(--gold);">
+        <div class="win-icon">⚖️</div>
+        <div class="win-title">Environmental Justice</div>
+        <div class="win-desc">Frontline and vulnerable communities — disproportionately Black, brown, and Indigenous — get prioritized investment. Climate justice IS racial justice.</div>
+      </div>
+    </div>
+    <div style="margin-top: 2rem; padding: 1.5rem; background: #111827; border-left: 4px solid var(--green); border-radius: 4px;">
+      <p style="color: #a8dadc; font-size: 0.95rem; line-height: 1.7;">
+        <strong style="color: white;">The legacy:</strong> While the full GND resolution hasn't passed, its core tenets became the Inflation Reduction Act — $369 billion in climate spending. AOC introduced the idea into the mainstream. The Overton window moved. The money followed.
+      </p>
+    </div>
+  </section>
+
+  <!-- FINAL QUOTE -->
+  <div class="quote-section" style="background: linear-gradient(135deg, #1a0a0f, #0a0a1f);">
+    <p class="big-quote">"We can be whatever we have the courage to see."</p>
+    <p class="quote-attr">— Alexandria Ocasio-Cortez</p>
+  </div>
+
+  <!-- FOOTER -->
+  <footer>
+    <div class="footer-title">AOC — The People's Champion</div>
+    <p style="color: #8899aa; margin-top: 0.5rem; font-size: 0.9rem;">NY-14 · The Bronx & Queens</p>
+    <p style="color: #4a5568; margin-top: 2rem; font-size: 0.8rem;">
+      Built with ❤️ at Basecamp Pizza · Informational tribute site · Not affiliated with Rep. Ocasio-Cortez's office
+    </p>
+    <p class="footer-sub">Horus Mission Control · 2026</p>
+  </footer>
+
+</body>
+</html>
